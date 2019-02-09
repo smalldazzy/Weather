@@ -13,6 +13,7 @@ class App extends React.Component {
     country: undefined,
     sunrise: undefined,
     sunset: undefined,
+    weather: undefined,
     error: undefined
   }
 
@@ -30,8 +31,7 @@ gettingWeather= async(e) => {
                 var seconds = "0" + date.getSeconds();
                 return hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
             }
-            // var surise_date=time(sunrise);
-            // var sunset_date = time(sunset);
+
 
   console.log(data);
   if(city){
@@ -41,25 +41,49 @@ gettingWeather= async(e) => {
     country: data.sys.country,
     sunrise: time(data.sys.sunrise),
     sunset: time(data.sys.sunset),
-    error: ""
+    weather: data.weather[0].description,
+    error: undefined
   });
 }
-}
+  else {
+    this.setState({
+      temp: undefined,
+      city: undefined,
+      country: undefined,
+      sunrise: undefined,
+      sunset: undefined,
+      weather: undefined,
+      error: "Введите название города"
+  });
+}}
+
 
   render(){
     return(
-      <div>
-        <Info />
-        <Form weatherMethod={this.gettingWeather} />
-        <Weather
-          temp={this.state.temp}
-          city={this.state.city}
-          country={this.state.country}
-          sunrise={this.state.sunrise}
-          sunset={this.state.sunset}
-          error={this.state.error}
-        />
+      <div className="wrapper">
+      <div className="main">
+        <div className="container">
+          <div className="row">
+            <div className="col-sm-5 info">
+              <Info />
+            </div>
+            <div className="col-sm-7 form">
+              <Form weatherMethod={this.gettingWeather} />
+                <Weather
+                  temp={this.state.temp}
+                  city={this.state.city}
+                  country={this.state.country}
+                  sunrise={this.state.sunrise}
+                  sunset={this.state.sunset}
+                  weather={this.state.weather}
+                  error={this.state.error}
+                />
+            </div>
+        </div>
       </div>
+      </div>
+      </div>
+
       );
   }
 }
